@@ -5,7 +5,7 @@ export default function DataTableBody<T>({ data, columns, rowProps }: DataTableB
 	if (!data || data.length === 0) {
 		return (
 			<tbody>
-				<tr style={{ height: '100px' }}>
+				<tr className='h-24'>
 					<td colSpan={columns.length} className='text-center align-middle text-gray-500'>
 						{data ? 'No data to show' : 'Loading...'}
 					</td>

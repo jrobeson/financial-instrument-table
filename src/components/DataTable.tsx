@@ -1,4 +1,4 @@
-import { ReactNode, type HTMLAttributes, type ReactElement } from 'react';
+import { ReactNode, useMemo, type HTMLAttributes, type ReactElement } from 'react';
 import { useSortableData } from '../hooks/useSortableData';
 
 export interface ColumnDef<T> {
@@ -17,7 +17,7 @@ export interface DataTableProps<T> {
 function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {
 	const { sortedData, setSortConfig } = useSortableData(data);
 
-	function handleSort(col: ColumnDef<T>) {
+	const handleSort = (col: ColumnDef<T>) => () => {
 		if (col.sortFn) {
 			setSortConfig({ sortFn: col.sortFn });
 		} else if (typeof col.accessor === 'string') {
@@ -29,9 +29,25 @@ function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {
 				setSortConfig({ sortFn: (a, b) => String(a[key]).localeCompare(String(b[key])) });
 			}
 		} else {
-			console.warn('Column is not sotrtable');
+			console.warn('Column is not sortable');
 		}
-	}
+	};
+
+	const rows = useMemo(() => {
+		return sortedData.map((row, rowIndex) => {
+			const additionalProps = rowProps ? rowProps(row, rowIndex) : {};
+			const { className, ...rest } = additionalProps;
+			return (
+				<tr key={rowIndex} {...rest} className={`hover:bg-gray-100 hover:text-gray-900 ${className || ''}`}>
+					{columns.map((col, colIndex) => (
+						<td key={colIndex} className='px-6 py-3 whitespace-nowrap text-sm font-medium'>
+							{col.Cell ? col.Cell(row) : typeof col.accessor === 'function' ? col.accessor(row) : (row[col.accessor] as ReactNode)}
+						</td>
+					))}
+				</tr>
+			);
+		});
+	}, [sortedData, rowProps, columns]);
 
 	return (
 		<div className='overflow-x-auto'>
@@ -42,28 +58,14 @@ function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {
 							<th
 								key={i}
 								className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
-								onClick={() => handleSort(col)}
+								onClick={handleSort(col)}
 							>
 								{col.header}
 							</th>
 						))}
 					</tr>
 				</thead>
-				<tbody className='bg-white divide-y divide-gray-200'>
-					{sortedData.map((row, rowIndex) => {
-						const additionalProps = rowProps ? rowProps(row, rowIndex) : {};
-						const { className, ...rest } = additionalProps;
-						return (
-							<tr key={rowIndex} {...rest} className={`hover:bg-gray-100 hover:text-gray-900 ${className || ''}`}>
-								{columns.map((col, colIndex) => (
-									<td key={colIndex} className='px-6 py-3 whitespace-nowrap text-sm font-medium'>
-										{col.Cell ? col.Cell(row) : typeof col.accessor === 'function' ? col.accessor(row) : (row[col.accessor] as ReactNode)}
-									</td>
-								))}
-							</tr>
-						);
-					})}
-				</tbody>
+				<tbody className='bg-white divide-y divide-gray-200'>{rows}</tbody>
 			</table>
 		</div>
 	);

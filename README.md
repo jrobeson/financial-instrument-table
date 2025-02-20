@@ -29,7 +29,7 @@ npm i
 npm run dev
 ```
 
-## Visit the table in production
+## Visit the deployed table
 
 https://financial-instrument-table.netlify.app/
 

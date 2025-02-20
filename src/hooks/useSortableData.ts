@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 
 export type SortConfig<T> = {
-	comparator: (a: T, b: T) => number;
+	sortFn: (a: T, b: T) => number;
 } | null;
 
 export function useSortableData<T>(data: T[], initalSortConfig: SortConfig<T> = null) {
@@ -11,7 +11,7 @@ export function useSortableData<T>(data: T[], initalSortConfig: SortConfig<T> = 
 		const sortableData = [...data];
 
 		if (sortConfig !== null) {
-			sortableData.sort(sortConfig.comparator);
+			sortableData.sort(sortConfig.sortFn);
 		}
 		return sortableData;
 	}, [data, sortConfig]);

@@ -20,39 +20,35 @@ const assetClassOrder: Record<AssetClass, number> = {
 };
 
 const columns: ColumnDef<FinancialInstrument>[] = [
-	{ header: 'Ticker', accessor: 'ticker', comparator: (a, b) => a.ticker.localeCompare(b.ticker) },
+	{ header: 'Ticker', accessor: 'ticker', sortFn: (a, b) => a.ticker.localeCompare(b.ticker) },
 	{
 		header: 'Price',
 		accessor: 'price',
-		comparator: (a, b) => b.price - a.price,
+		sortFn: (a, b) => b.price - a.price,
 		Cell: (row: FinancialInstrument) => <span className={`${row.price >= 0 ? 'text-blue-600' : 'text-red-600'}`}>{row.price.toFixed(2)}</span>,
 	},
 	{
 		header: 'Asset Class',
 		accessor: 'assetClass',
-		comparator: (a, b) => assetClassOrder[a.assetClass] - assetClassOrder[b.assetClass],
+		sortFn: (a, b) => assetClassOrder[a.assetClass] - assetClassOrder[b.assetClass],
 	},
 ];
 
 const rowProps = (row: FinancialInstrument): HTMLAttributes<HTMLTableRowElement> => {
-	let backgroundColor;
-	let color;
+	let className;
 	switch (row.assetClass) {
 		case AssetClass.Macro:
-			backgroundColor = '#f6fee7';
-			color = 'black';
+			className = 'bg-lime-50';
 			break;
 		case AssetClass.Equities:
-			backgroundColor = '#00bbfe';
-			color = 'white';
+			className = 'bg-sky-400 text-white';
 			break;
 		case AssetClass.Credit:
-			backgroundColor = '#05df71';
+			className = 'bg-green-400 ';
 			break;
 		default:
-			backgroundColor = 'white';
 	}
-	return { style: { backgroundColor, color } };
+	return { className };
 };
 
 export default function FinancialTable({ data }: { data: FinancialInstrument[] }) {

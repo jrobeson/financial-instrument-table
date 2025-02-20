@@ -4,7 +4,7 @@ import { useSortableData } from '../hooks/useSortableData';
 export interface ColumnDef<T> {
 	header: string;
 	accessor: keyof T | ((row: T) => ReactNode);
-	comparator?: (a: T, b: T) => number;
+	sortFn?: (a: T, b: T) => number;
 	Cell?: (row: T) => ReactElement;
 }
 
@@ -18,16 +18,15 @@ function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {
 	const { sortedData, setSortConfig } = useSortableData(data);
 
 	function handleSort(col: ColumnDef<T>) {
-		console.log(col);
-		if (col.comparator) {
-			setSortConfig({ comparator: col.comparator });
+		if (col.sortFn) {
+			setSortConfig({ sortFn: col.sortFn });
 		} else if (typeof col.accessor === 'string') {
 			const key = col.accessor;
 			const sampleSortValue = data[0]?.[key];
 			if (typeof sampleSortValue === 'number') {
-				setSortConfig({ comparator: (a, b) => (a[key] as number) - (b[key] as number) });
+				setSortConfig({ sortFn: (a, b) => (a[key] as number) - (b[key] as number) });
 			} else {
-				setSortConfig({ comparator: (a, b) => String(a[key]).localeCompare(String(b[key])) });
+				setSortConfig({ sortFn: (a, b) => String(a[key]).localeCompare(String(b[key])) });
 			}
 		} else {
 			console.warn('Column is not sotrtable');
@@ -35,31 +34,38 @@ function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {
 	}
 
 	return (
-		<table className='w-full text-left border-collapse'>
-			<thead>
-				<tr>
-					{columns.map((col, i) => (
-						<th key={i} className='text-zinc-600 cursor-pointer p-2' onClick={() => handleSort(col)}>
-							{col.header}
-						</th>
-					))}
-				</tr>
-			</thead>
-			<tbody>
-				{sortedData.map((row, rowIndex) => {
-					const additionalProps = rowProps ? rowProps(row, rowIndex) : {};
-					return (
-						<tr key={rowIndex} {...additionalProps} className='border-slate-300 border border-r-0 border-l-0'>
-							{columns.map((col, colIndex) => (
-								<td key={colIndex} className='p-2'>
-									{col.Cell ? col.Cell(row) : typeof col.accessor === 'function' ? col.accessor(row) : (row[col.accessor] as ReactNode)}
-								</td>
-							))}
-						</tr>
-					);
-				})}
-			</tbody>
-		</table>
+		<div className='overflow-x-auto'>
+			<table className='min-w-full divide-y divide-gray-200'>
+				<thead className='bg-gray-50'>
+					<tr>
+						{columns.map((col, i) => (
+							<th
+								key={i}
+								className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
+								onClick={() => handleSort(col)}
+							>
+								{col.header}
+							</th>
+						))}
+					</tr>
+				</thead>
+				<tbody className='bg-white divide-y divide-gray-200'>
+					{sortedData.map((row, rowIndex) => {
+						const additionalProps = rowProps ? rowProps(row, rowIndex) : {};
+						const { className, ...rest } = additionalProps;
+						return (
+							<tr key={rowIndex} {...rest} className={`hover:bg-gray-100 ${className || ''}`}>
+								{columns.map((col, colIndex) => (
+									<td key={colIndex} className='px-6 py-3 whitespace-nowrap text-sm font-medium'>
+										{col.Cell ? col.Cell(row) : typeof col.accessor === 'function' ? col.accessor(row) : (row[col.accessor] as ReactNode)}
+									</td>
+								))}
+							</tr>
+						);
+					})}
+				</tbody>
+			</table>
+		</div>
 	);
 }
 

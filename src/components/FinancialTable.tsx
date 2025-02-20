@@ -39,15 +39,15 @@ const rowProps = (row: FinancialInstrument): HTMLAttributes<HTMLTableRowElement>
 	let color;
 	switch (row.assetClass) {
 		case AssetClass.Macro:
-			backgroundColor = 'white';
+			backgroundColor = '#f6fee7';
 			color = 'black';
 			break;
 		case AssetClass.Equities:
-			backgroundColor = 'blue';
+			backgroundColor = '#00bbfe';
 			color = 'white';
 			break;
 		case AssetClass.Credit:
-			backgroundColor = 'green';
+			backgroundColor = '#05df71';
 			break;
 		default:
 			backgroundColor = 'white';

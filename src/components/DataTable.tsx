@@ -39,7 +39,7 @@ function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {
 			<thead>
 				<tr>
 					{columns.map((col, i) => (
-						<th key={i} className='text-slate-700 cursor-pointer py-2' onClick={() => handleSort(col)}>
+						<th key={i} className='text-zinc-600 cursor-pointer p-2' onClick={() => handleSort(col)}>
 							{col.header}
 						</th>
 					))}
@@ -49,9 +49,9 @@ function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {
 				{sortedData.map((row, rowIndex) => {
 					const additionalProps = rowProps ? rowProps(row, rowIndex) : {};
 					return (
-						<tr key={rowIndex} {...additionalProps} className='border-slate-400 border border-r-0 border-l-0 '>
+						<tr key={rowIndex} {...additionalProps} className='border-slate-300 border border-r-0 border-l-0'>
 							{columns.map((col, colIndex) => (
-								<td key={colIndex}>
+								<td key={colIndex} className='p-2'>
 									{col.Cell ? col.Cell(row) : typeof col.accessor === 'function' ? col.accessor(row) : (row[col.accessor] as ReactNode)}
 								</td>
 							))}

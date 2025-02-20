@@ -4,13 +4,17 @@ import { type DataTableProps as DataTableBodyProps } from './DataTable';
 export default function DataTableBody<T>({ data, columns, rowProps }: DataTableBodyProps<T>) {
 	if (!data || data.length === 0) {
 		return (
-			<tbody>
-				<tr className='h-24'>
-					<td colSpan={columns.length} className='text-center align-middle text-gray-500'>
-						{data ? 'No data to show' : 'Loading...'}
-					</td>
-				</tr>
-			</tbody>
+			<div className='overflow-x-auto max-h-[45rem]'>
+				<table className='min-w-full divide-y divide-gray-200'>
+					<tbody>
+						<tr className='h-24'>
+							<td colSpan={columns.length} className='text-center align-middle text-gray-500'>
+								{data ? 'No data to show' : 'Loading...'}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		);
 	}
 	const content = data.map((row, rowIndex) => {
@@ -26,5 +30,11 @@ export default function DataTableBody<T>({ data, columns, rowProps }: DataTableB
 			</tr>
 		);
 	});
-	return <tbody className='bg-white divide-y divide-gray-200'>{content}</tbody>;
+	return (
+		<div className='overflow-x-auto max-h-[45rem]'>
+			<table className='min-w-full divide-y divide-gray-200'>
+				<tbody className='bg-white divide-y divide-gray-200'>{content}</tbody>
+			</table>
+		</div>
+	);
 }

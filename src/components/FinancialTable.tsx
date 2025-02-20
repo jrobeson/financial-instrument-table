@@ -41,10 +41,10 @@ const rowProps = (row: FinancialInstrument): HTMLAttributes<HTMLTableRowElement>
 			className = 'bg-lime-50';
 			break;
 		case AssetClass.Equities:
-			className = 'bg-sky-400';
+			className = 'bg-sky-400 text-white';
 			break;
 		case AssetClass.Credit:
-			className = 'bg-green-400 ';
+			className = 'bg-green-400 text-white';
 			break;
 		default:
 	}

@@ -38,7 +38,7 @@ const rowProps = (row: FinancialInstrument): HTMLAttributes<HTMLTableRowElement>
 	let className;
 	switch (row.assetClass) {
 		case AssetClass.Macro:
-			className = 'bg-lime-50';
+			className = 'bg-slate-50';
 			break;
 		case AssetClass.Equities:
 			className = 'bg-sky-400 text-white';

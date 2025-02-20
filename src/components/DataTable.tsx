@@ -1,5 +1,6 @@
-import { ReactNode, useMemo, type HTMLAttributes, type ReactElement } from 'react';
+import { type ReactNode, type HTMLAttributes, type ReactElement } from 'react';
 import { useSortableData } from '../hooks/useSortableData';
+import DataTableBody from './DataTableBody';
 
 export interface ColumnDef<T> {
 	header: string;
@@ -33,22 +34,6 @@ function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {
 		}
 	};
 
-	const rows = useMemo(() => {
-		return sortedData.map((row, rowIndex) => {
-			const additionalProps = rowProps ? rowProps(row, rowIndex) : {};
-			const { className, ...rest } = additionalProps;
-			return (
-				<tr key={rowIndex} {...rest} className={`hover:bg-gray-100 hover:text-gray-900 ${className || ''}`}>
-					{columns.map((col, colIndex) => (
-						<td key={colIndex} className='px-6 py-3 whitespace-nowrap text-sm font-medium'>
-							{col.Cell ? col.Cell(row) : typeof col.accessor === 'function' ? col.accessor(row) : (row[col.accessor] as ReactNode)}
-						</td>
-					))}
-				</tr>
-			);
-		});
-	}, [sortedData, rowProps, columns]);
-
 	return (
 		<div className='overflow-x-auto'>
 			<table className='min-w-full divide-y divide-gray-200'>
@@ -65,7 +50,7 @@ function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {
 						))}
 					</tr>
 				</thead>
-				<tbody className='bg-white divide-y divide-gray-200'>{rows}</tbody>
+				<DataTableBody data={sortedData} columns={columns} rowProps={rowProps} />
 			</table>
 		</div>
 	);

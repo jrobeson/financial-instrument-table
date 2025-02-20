@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 import { type DataTableProps as DataTableBodyProps } from './DataTable';
-import { motion, AnimatePresence, LayoutGroup, useIsPresent } from 'motion/react';
+import { motion, AnimatePresence, useIsPresent } from 'motion/react';
 
 export default function DataTableBody<T>({ data, columns, rowProps }: DataTableBodyProps<T>) {
 	const isPresent = useIsPresent();
@@ -32,7 +32,7 @@ export default function DataTableBody<T>({ data, columns, rowProps }: DataTableB
 				transition={{ type: 'none' }}
 				variants={{
 					in: { scaleY: 1, opacity: 1 },
-					out: { scaleY: 0, opacity: 0},
+					out: { scaleY: 0, opacity: 0 },
 					tapped: { scale: 0.98, opacity: 0.5, transition: { duration: 0.1 } },
 				}}
 				className={`hover:bg-gray-100 hover:text-gray-900 ${className || ''}`}

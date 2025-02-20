@@ -1,8 +1,9 @@
-import { type ReactNode, type HTMLAttributes, type ReactElement, useCallback } from 'react';
+import { type ReactNode, type ReactElement, useCallback } from 'react';
 import { useSortableData } from '../hooks/useSortableData';
 import DataTableBody from './DataTableBody';
 import DataTableFooter from './DataTableFooter';
 import DataTableHeader from './DataTableHeader';
+import { type HTMLMotionProps } from 'motion/react';
 
 export interface ColumnDef<T> {
 	header: string;
@@ -14,7 +15,7 @@ export interface ColumnDef<T> {
 export interface DataTableProps<T> {
 	data: T[];
 	columns: ColumnDef<T>[];
-	rowProps?: (row: T, rowIndex: number) => HTMLAttributes<HTMLTableRowElement>;
+	rowProps?: (row: T, rowIndex: number) => HTMLMotionProps<'tr'>;
 }
 
 function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {

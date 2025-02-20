@@ -13,12 +13,7 @@ const App: React.FC = () => {
 		});
 	}, []);
 
-	return (
-		<div style={{ padding: '20px' }}>
-			<h1>Financial Instruments</h1>
-			{loading ? <p>Loading data...</p> : <FinancialTable data={data} />}
-		</div>
-	);
+	return <div style={{ padding: '20px' }}>{loading ? <p>Loading data...</p> : <FinancialTable data={data} />}</div>;
 };
 
 export default App;

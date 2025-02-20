@@ -1,5 +1,5 @@
-import { type HTMLAttributes } from 'react';
 import { DataTable, type ColumnDef } from './DataTable';
+import { type HTMLMotionProps } from 'motion/react';
 
 export enum AssetClass {
 	Equities = 'Equities',
@@ -34,7 +34,7 @@ const columns: ColumnDef<FinancialInstrument>[] = [
 	},
 ];
 
-const rowProps = (row: FinancialInstrument): HTMLAttributes<HTMLTableRowElement> => {
+const rowProps = (row: FinancialInstrument): HTMLMotionProps<'tr'> => {
 	let className;
 	switch (row.assetClass) {
 		case AssetClass.Macro:

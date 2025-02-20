@@ -1,4 +1,4 @@
-# Financial Instrument table
+# Financial Instrument Table
 
 ## Running Locally
 

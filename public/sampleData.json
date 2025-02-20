@@ -31,7 +31,7 @@
 	},
 	{
 		"ticker": "ETA",
-		"price": 3089.2,
+		"price": -3089.2,
 		"assetClass": "Macro"
 	},
 	{
@@ -51,7 +51,7 @@
 	},
 	{
 		"ticker": "LAMBDA",
-		"price": 1472.2,
+		"price": -1472.2,
 		"assetClass": "Credit"
 	},
 	{
@@ -61,7 +61,7 @@
 	},
 	{
 		"ticker": "NU",
-		"price": 2744.89,
+		"price": -2744.89,
 		"assetClass": "Macro"
 	},
 	{

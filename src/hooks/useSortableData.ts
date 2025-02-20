@@ -9,7 +9,6 @@ export function useSortableData<T>(data: T[], initalSortConfig: SortConfig<T> = 
 
 	const sortedData = useMemo(() => {
 		const sortableData = [...data];
-
 		if (sortConfig !== null) {
 			sortableData.sort(sortConfig.sortFn);
 		}

@@ -1,5 +1,5 @@
 import { FinancialInstrument, AssetClass } from './components/FinancialTable';
-import sampleData from '../public/sampleData.json';
+import sampleData from './data/sampleData.json';
 
 export const fetchFinancialData = (): Promise<FinancialInstrument[]> => {
 	const data: FinancialInstrument[] = sampleData.map((item) => ({

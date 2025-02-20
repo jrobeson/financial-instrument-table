@@ -5,7 +5,7 @@ export default function DataTableBody<T>({ data, columns, rowProps }: DataTableB
 	if (!data || data.length === 0) {
 		return (
 			<div className='overflow-x-auto max-h-[45rem]'>
-				<table className='min-w-full divide-y divide-gray-200'>
+				<table className='min-w-full'>
 					<tbody>
 						<tr className='h-24'>
 							<td colSpan={columns.length} className='text-center align-middle text-gray-500'>
@@ -32,7 +32,7 @@ export default function DataTableBody<T>({ data, columns, rowProps }: DataTableB
 	});
 	return (
 		<div className='overflow-x-auto max-h-[45rem]'>
-			<table className='min-w-full divide-y divide-gray-200'>
+			<table className='min-w-full'>
 				<tbody className='bg-white divide-y divide-gray-200'>{content}</tbody>
 			</table>
 		</div>

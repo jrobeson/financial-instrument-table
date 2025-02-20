@@ -26,5 +26,5 @@ export default function DataTableBody<T>({ data, columns, rowProps }: DataTableB
 			</tr>
 		);
 	});
-	return <tbody>{content}</tbody>;
+	return <tbody className='bg-white divide-y divide-gray-200'>{content}</tbody>;
 }

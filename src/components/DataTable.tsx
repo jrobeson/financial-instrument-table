@@ -1,4 +1,4 @@
-import { type ReactNode, type HTMLAttributes, type ReactElement } from 'react';
+import { type ReactNode, type HTMLAttributes, type ReactElement, useCallback } from 'react';
 import { useSortableData } from '../hooks/useSortableData';
 import DataTableBody from './DataTableBody';
 import DataTableFooter from './DataTableFooter';
@@ -20,21 +20,24 @@ export interface DataTableProps<T> {
 function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {
 	const { sortedData, setSortConfig } = useSortableData(data);
 
-	const handleSort = (col: ColumnDef<T>) => () => {
-		if (col.sortFn) {
-			setSortConfig({ sortFn: col.sortFn });
-		} else if (typeof col.accessor === 'string') {
-			const key = col.accessor;
-			const sampleSortValue = data[0]?.[key];
-			if (typeof sampleSortValue === 'number') {
-				setSortConfig({ sortFn: (a, b) => (a[key] as number) - (b[key] as number) });
+	const handleSort = useCallback(
+		(col: ColumnDef<T>) => () => {
+			if (col.sortFn) {
+				setSortConfig({ sortFn: col.sortFn });
+			} else if (typeof col.accessor === 'string') {
+				const key = col.accessor;
+				const sampleSortValue = data[0]?.[key];
+				if (typeof sampleSortValue === 'number') {
+					setSortConfig({ sortFn: (a, b) => (a[key] as number) - (b[key] as number) });
+				} else {
+					setSortConfig({ sortFn: (a, b) => String(a[key]).localeCompare(String(b[key])) });
+				}
 			} else {
-				setSortConfig({ sortFn: (a, b) => String(a[key]).localeCompare(String(b[key])) });
+				console.warn('Column is not sortable');
 			}
-		} else {
-			console.warn('Column is not sortable');
-		}
-	};
+		},
+		[data, setSortConfig]
+	);
 
 	return (
 		<div>

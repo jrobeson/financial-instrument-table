@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 
 export type SortConfig<T> = {
 	sortFn: (a: T, b: T) => number;
+	sortKey?: keyof T;
 } | null;
 
 export function useSortableData<T>(data: T[], initalSortConfig: SortConfig<T> = null) {

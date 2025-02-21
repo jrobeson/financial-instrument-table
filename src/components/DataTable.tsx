@@ -19,25 +19,27 @@ export interface DataTableProps<T> {
 }
 
 function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {
-	const { sortedData, setSortConfig } = useSortableData(data);
+	const { sortedData, setSortConfig, sortConfig } = useSortableData(data);
 
+	////come back to this later and set the sort key properly
 	const handleSort = useCallback(
 		(col: ColumnDef<T>) => () => {
+			if (col.accessor === sortConfig?.sortKey) return;
 			if (col.sortFn) {
-				setSortConfig({ sortFn: col.sortFn });
+				setSortConfig({ sortFn: col.sortFn, sortKey: col.accessor as keyof T });
 			} else if (typeof col.accessor === 'string') {
 				const key = col.accessor;
 				const sampleSortValue = data[0]?.[key];
 				if (typeof sampleSortValue === 'number') {
-					setSortConfig({ sortFn: (a, b) => (a[key] as number) - (b[key] as number) });
+					setSortConfig({ sortFn: (a, b) => (a[key] as number) - (b[key] as number), sortKey: key });
 				} else {
-					setSortConfig({ sortFn: (a, b) => String(a[key]).localeCompare(String(b[key])) });
+					setSortConfig({ sortFn: (a, b) => String(a[key]).localeCompare(String(b[key])), sortKey: key });
 				}
 			} else {
 				console.warn('Column is not sortable');
 			}
 		},
-		[data, setSortConfig]
+		[data, setSortConfig, sortConfig]
 	);
 
 	return (

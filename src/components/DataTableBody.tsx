@@ -33,7 +33,6 @@ export default function DataTableBody<T>({ data, columns, rowProps }: DataTableB
 				variants={{
 					in: { scaleY: 1, opacity: 1 },
 					out: { scaleY: 0, opacity: 0 },
-					tapped: { scale: 0.98, opacity: 0.5, transition: { duration: 0.1 } },
 				}}
 				className={`hover:bg-gray-100 hover:text-gray-900 ${className || ''}`}
 			>

@@ -21,7 +21,6 @@ export interface DataTableProps<T> {
 function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {
 	const { sortedData, setSortConfig, sortConfig } = useSortableData(data);
 
-	////come back to this later and set the sort key properly
 	const handleSort = useCallback(
 		(col: ColumnDef<T>) => () => {
 			if (col.accessor === sortConfig?.sortKey) return;

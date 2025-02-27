@@ -1,13 +1,12 @@
 import { type ReactNode } from 'react';
 import { type DataTableProps as DataTableBodyProps } from './DataTable';
-import { motion, AnimatePresence, useIsPresent } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface WithOptionalId {
 	id?: string | number;
 }
 
 export default function DataTableBody<T>({ data, columns, rowProps }: DataTableBodyProps<T>) {
-	const isPresent = useIsPresent();
 	if (!data || data.length === 0) {
 		return (
 			<div className='overflow-x-auto max-h-[45rem]'>

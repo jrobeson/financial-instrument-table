@@ -60,3 +60,9 @@ export default function DataTableBody<T>({ data, columns, rowProps }: DataTableB
 		</div>
 	);
 }
+
+/*<colgroup>
+{columns.map((_, i) => (
+	<col key={i} style={{ width: `${100 / columns.length}%` }} />
+))}
+</colgroup> */

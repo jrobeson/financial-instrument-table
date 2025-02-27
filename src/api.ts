@@ -1,4 +1,4 @@
-import { FinancialInstrument, AssetClass } from './components/FinancialTable';
+import { type FinancialInstrument, AssetClass } from './components/FinancialTable';
 import sampleData from './data/sampleData.json';
 
 export const fetchFinancialData = (): Promise<FinancialInstrument[]> => {

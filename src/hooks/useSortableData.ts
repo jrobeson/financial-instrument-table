@@ -7,7 +7,6 @@ export type SortConfig<T> = {
 
 export function useSortableData<T>(data: T[], initalSortConfig: SortConfig<T> = null) {
 	const [sortConfig, setSortConfig] = useState<SortConfig<T>>(initalSortConfig);
-
 	const sortedData = useMemo(() => {
 		const sortableData = [...data];
 		if (sortConfig !== null) {

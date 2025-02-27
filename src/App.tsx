@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import FinancialTable, { FinancialInstrument } from './components/FinancialTable';
+import FinancialTable, { type FinancialInstrument } from './components/FinancialTable';
 import { fetchFinancialData } from './api';
 
 const App: React.FC = () => {

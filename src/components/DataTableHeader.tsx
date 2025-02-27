@@ -26,3 +26,9 @@ export default function DataTableHeader<T>({ columns, handleSort }: DataTableHea
 		</div>
 	);
 }
+
+/*<colgroup>
+{columns.map((_, i) => (
+	<col key={i} style={{ width: `${100 / columns.length}%` }} />
+))}
+</colgroup> */

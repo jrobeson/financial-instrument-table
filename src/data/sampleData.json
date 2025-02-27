@@ -1,9 +1,5 @@
 [
-	{
-		"ticker": "ALPHA",
-		"price": 3150.67,
-		"assetClass": "Credit"
-	},
+	{ "ticker": "ALPHA", "price": 3150.67, "assetClass": "Credit" },
 	{
 		"ticker": "BETA",
 		"price": 3791.37,

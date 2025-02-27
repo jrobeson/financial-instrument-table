@@ -8,17 +8,21 @@ import { type HTMLMotionProps } from 'motion/react';
 export interface ColumnDef<T> {
 	header: string;
 	accessor: keyof T | ((row: T) => ReactNode);
+	editable?: boolean;
+	validate?: (value: string) => boolean;
 	sortFn?: (a: T, b: T) => number;
 	Cell?: (row: T) => ReactElement;
+	onCellChange?: (row: T, value: string) => void;
 }
 
 export interface DataTableProps<T> {
 	data: T[];
 	columns: ColumnDef<T>[];
 	rowProps?: (row: T, rowIndex: number) => HTMLMotionProps<'tr'>;
+	onCellChange?: (row: T, key: keyof T, value: string) => void;
 }
 
-function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {
+function DataTableComponent<T>({ data, columns, rowProps, onCellChange }: DataTableProps<T>) {
 	const { sortedData, setSortConfig, sortConfig } = useSortableData(data);
 
 	const handleSort = useCallback(
@@ -44,7 +48,7 @@ function DataTableComponent<T>({ data, columns, rowProps }: DataTableProps<T>) {
 	return (
 		<div>
 			<DataTableHeader columns={columns} handleSort={handleSort} />
-			<DataTableBody data={sortedData} columns={columns} rowProps={rowProps} />
+			<DataTableBody data={sortedData} columns={columns} rowProps={rowProps} onCellChange={onCellChange} />
 			<DataTableFooter columnLength={columns.length} rowLength={data.length} />
 		</div>
 	);

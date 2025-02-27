@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { DataTable, type ColumnDef } from './DataTable';
 import { type HTMLMotionProps } from 'motion/react';
 
@@ -8,6 +9,7 @@ export enum AssetClass {
 }
 
 export type FinancialInstrument = {
+	id: string | number;
 	ticker: string;
 	price: number;
 	assetClass: AssetClass;
@@ -25,6 +27,7 @@ const columns: ColumnDef<FinancialInstrument>[] = [
 		header: 'Price',
 		accessor: 'price',
 		sortFn: (a, b) => b.price - a.price,
+		editable: true,
 		Cell: (row: FinancialInstrument) => <span className={`${row.price >= 0 ? 'text-blue-600' : 'text-red-600'}`}>{row.price.toFixed(2)}</span>,
 	},
 	{
@@ -52,5 +55,16 @@ const rowProps = (row: FinancialInstrument): HTMLMotionProps<'tr'> => {
 };
 
 export default function FinancialTable({ data }: { data: FinancialInstrument[] }) {
-	return <DataTable data={data} columns={columns} rowProps={rowProps} />;
+	const [tableData, setTableData] = useState<FinancialInstrument[]>(data);
+
+	useEffect(() => {
+		setTableData(data);
+	}, [data]);
+
+	const handleCellChange = (row: FinancialInstrument, key: keyof FinancialInstrument, value: string) => {
+		console.log('Financial handleCellChange', row, key, value);
+		setTableData((prev) => prev.map((item) => (item.id === row.id ? { ...item, [key]: value } : item)));
+	};
+
+	return <DataTable data={tableData} columns={columns} onCellChange={handleCellChange} rowProps={rowProps} />;
 }

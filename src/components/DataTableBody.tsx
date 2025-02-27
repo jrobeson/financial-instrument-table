@@ -1,8 +1,13 @@
 import { type ReactNode } from 'react';
 import { type DataTableProps as DataTableBodyProps } from './DataTable';
 import { motion, AnimatePresence, useIsPresent } from 'motion/react';
+import EditableCell from './EditableCell';
 
-export default function DataTableBody<T>({ data, columns, rowProps }: DataTableBodyProps<T>) {
+interface WithOptionalId {
+	id?: string | number;
+}
+
+export default function DataTableBody<T>({ data, columns, rowProps, onCellChange }: DataTableBodyProps<T>) {
 	const isPresent = useIsPresent();
 	if (!data || data.length === 0) {
 		return (
@@ -22,8 +27,9 @@ export default function DataTableBody<T>({ data, columns, rowProps }: DataTableB
 	const content = data.map((row, rowIndex) => {
 		const additionalProps = rowProps ? rowProps(row, rowIndex) : {};
 		const { className, ...rest } = additionalProps;
+		const key = (row as WithOptionalId).id ?? rowIndex;
 		return (
-			<AnimatePresence key={rowIndex + Math.random()}>
+			<AnimatePresence key={key}>
 				<motion.tr
 					{...rest}
 					layout
@@ -38,7 +44,25 @@ export default function DataTableBody<T>({ data, columns, rowProps }: DataTableB
 				>
 					{columns.map((col, colIndex) => (
 						<td key={colIndex} className='px-6 py-3 whitespace-nowrap text-sm font-medium'>
-							{col.Cell ? col.Cell(row) : typeof col.accessor === 'function' ? col.accessor(row) : (row[col.accessor] as ReactNode)}
+							{col.editable ? (
+								<EditableCell
+									value={String(row[col.accessor as keyof T])}
+									onChange={(newValue) => {
+										if (col.onCellChange) {
+											col.onCellChange(row, newValue);
+										} else if (onCellChange) {
+											onCellChange(row, col.accessor as keyof T, newValue);
+										}
+									}}
+									validate={col?.validate}
+								/>
+							) : col.Cell ? (
+								col.Cell(row)
+							) : typeof col.accessor === 'function' ? (
+								col.accessor(row)
+							) : (
+								(row[col.accessor] as ReactNode)
+							)}
 						</td>
 					))}
 				</motion.tr>

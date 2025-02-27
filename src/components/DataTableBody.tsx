@@ -2,6 +2,10 @@ import { type ReactNode } from 'react';
 import { type DataTableProps as DataTableBodyProps } from './DataTable';
 import { motion, AnimatePresence, useIsPresent } from 'motion/react';
 
+interface WithOptionalId {
+	id?: string | number;
+}
+
 export default function DataTableBody<T>({ data, columns, rowProps }: DataTableBodyProps<T>) {
 	const isPresent = useIsPresent();
 	if (!data || data.length === 0) {
@@ -22,8 +26,9 @@ export default function DataTableBody<T>({ data, columns, rowProps }: DataTableB
 	const content = data.map((row, rowIndex) => {
 		const additionalProps = rowProps ? rowProps(row, rowIndex) : {};
 		const { className, ...rest } = additionalProps;
+		const key = (row as WithOptionalId).id || rowIndex;
 		return (
-			<AnimatePresence key={rowIndex + Math.random()}>
+			<AnimatePresence key={key}>
 				<motion.tr
 					{...rest}
 					layout

@@ -8,6 +8,7 @@ export enum AssetClass {
 }
 
 export type FinancialInstrument = {
+	id: string | number;
 	ticker: string;
 	price: number;
 	assetClass: AssetClass;

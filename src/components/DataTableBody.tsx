@@ -29,18 +29,7 @@ export default function DataTableBody<T>({ data, columns, rowProps }: DataTableB
 		const key = (row as WithOptionalId).id || rowIndex;
 		return (
 			<AnimatePresence key={key}>
-				<motion.tr
-					{...rest}
-					layout
-					initial='out'
-					animate={isPresent ? 'in' : 'out'}
-					variants={{
-						in: { scaleY: 1, opacity: 1 },
-						out: { scaleY: 0, opacity: 0 },
-					}}
-					transition={{ type: 'spring', stiffness: 500, damping: 50, mass: 1 }}
-					className={`hover:bg-gray-100 hover:text-gray-900 ${className || ''}`}
-				>
+				<motion.tr {...rest} layout className={`hover:bg-gray-100 hover:text-gray-900 ${className || ''}`}>
 					{columns.map((col, colIndex) => (
 						<td key={colIndex} className='px-6 py-3 whitespace-nowrap text-sm font-medium'>
 							{col.Cell ? col.Cell(row) : typeof col.accessor === 'function' ? col.accessor(row) : (row[col.accessor] as ReactNode)}
